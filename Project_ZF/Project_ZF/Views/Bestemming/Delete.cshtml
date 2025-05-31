@@ -1,0 +1,58 @@
+﻿@model Project_ZF.ViewModels.BestemmingViewModel
+
+<h2>Bestemming Verwijderen</h2>
+
+<div>
+    <h3>Weet je zeker dat je deze bestemming wilt verwijderen?</h3>
+    <div>
+        <h4>Bestemming</h4>
+        <hr />
+        <dl class="row">
+            <dt class="col-sm-2">
+                Code
+            </dt>
+            <dd class="col-sm-10">
+                @Model.Code
+            </dd>
+            <dt class="col-sm-2">
+                Naam
+            </dt>
+            <dd class="col-sm-10">
+                @Model.BestemmingsNaam
+            </dd>
+            <dt class="col-sm-2">
+                Beschrijving
+            </dt>
+            <dd class="col-sm-10">
+                @Model.Beschrijving
+            </dd>
+            <dt class="col-sm-2">
+                Min Leeftijd
+            </dt>
+            <dd class="col-sm-10">
+                @Model.MinLeeftijd
+            </dd>
+            <dt class="col-sm-2">
+                Max Leeftijd
+            </dt>
+            <dd class="col-sm-10">
+                @Model.MaxLeeftijd
+            </dd>
+            <dt class="col-sm-2">
+                Fotos
+            </dt>
+            <dd class="col-sm-10">
+                @foreach (var foto in Model.Fotos)
+                {
+                    <img src="@Url.Content("~/images/" + foto.Naam)" alt="Foto" class="img-thumbnail" style="width:100px;height:auto;" />
+                }
+            </dd>
+        </dl>
+
+        <form asp-action="Delete" method="post">
+            <input type="hidden" asp-for="Id" />
+            <button type="submit" class="btn btn-danger">Verwijderen</button>
+            <a asp-action="Index" class="btn btn-secondary">Terug</a>
+        </form>
+    </div>
+</div>

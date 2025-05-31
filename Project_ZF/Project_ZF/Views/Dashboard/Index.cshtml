@@ -1,0 +1,235 @@
+﻿@model Project_ZF.ViewModels.DashboardViewModel
+
+@{
+    ViewData["Title"] = "Dashboard";
+}
+
+<div class="d-flex justify-content-between align-items-center mt-3">
+    <h2>Welkom, @Model.User.Voornaam @Model.User.Naam!</h2>
+
+    <!-- Knoppen-container -->
+    <div class="col-4 ms-auto">
+        <!-- Eerste rij knoppen -->
+        <div class="row mt-3">
+            <div class="col-6 mb-2">
+                <a asp-controller="Kind" asp-action="Index" asp-route-id="@User.FindFirstValue(ClaimTypes.NameIdentifier)" class="btn btn-success w-100">Beheer kind</a>
+            </div>
+            <div class="col-6 mb-2">
+                <a href="~/Identity/Account/Manage" class="btn btn-success w-100">Account beheren</a>
+            </div>
+        </div>
+
+        <!-- Tweede rij knoppen (met if-statements) -->
+        <div class="row">
+            @if (User.IsInRole("monitor") || User.IsInRole("admin"))
+            {
+                <div class="col-6 mb-2">
+                    <a asp-controller="Opleiding" asp-action="Index" class="btn btn-success w-100">Opleidingen bekijken</a>
+                </div>
+            }
+
+            @if (User.IsInRole("beheerder") || User.IsInRole("verantwoordelijke") || User.IsInRole("admin"))
+            {
+                <div class="col-6 mb-2">
+                    <a asp-controller="Bestemming" asp-action="Index" class="btn btn-success w-100">Bestemmingen bekijken</a>
+                </div>
+            }
+
+            @if (User.IsInRole("beheerder") || User.IsInRole("verantwoordelijke") || User.IsInRole("admin"))
+            {
+                <div class="col-6 mb-2">
+                    <a asp-controller="Account" asp-action="Index" class="btn btn-success w-100">Gebruikers beheren</a>
+                </div>
+            }
+
+            @if (User.IsInRole("beheerder") || User.IsInRole("verantwoordelijke") || User.IsInRole("admin"))
+            {
+                <div class="col-6 mb-2">
+                    <a asp-controller="Opleiding" asp-action="Index" class="btn btn-success w-100">Opleidingen beheren</a>
+                </div>
+            }
+
+            @if (User.IsInRole("beheerder") || User.IsInRole("verantwoordelijke") || User.IsInRole("admin"))
+            {
+                <div class="col-6 mb-2">
+                    <a asp-controller="Bestemming" asp-action="Index" class="btn btn-success w-100">Activiteiten beheren</a>
+                </div>
+            }
+
+
+            @if (User.IsInRole("beheerder") || User.IsInRole("verantwoordelijke") || User.IsInRole("admin"))
+            {
+                <div class="col-6 mb-2">
+                    <a asp-controller="MonitorBeheer" asp-action="Index" class="btn btn-success w-100">Monitoren beheren</a>
+                </div>
+            }
+
+            @if (User.IsInRole("beheerder") || User.IsInRole("admin"))
+            {
+                <div class="col-6 mb-2">
+                    <a asp-controller="OnkostenBeheren" asp-action="Index" class="btn btn-success w-100">Onkosten beheren</a>
+                </div>
+            }
+            @if (User.IsInRole("beheerder") || User.IsInRole("admin"))
+            {
+                <div class="col-6 mb-2">
+                    <a asp-controller="Level" asp-action="Index" class="btn btn-success w-100">Levels beheren</a>
+
+                </div>
+            }
+            <div class="col-6 mb-2">
+                <a asp-controller="Punten" asp-action="Index" asp-route-id="@User.FindFirstValue(ClaimTypes.NameIdentifier)" class="btn btn-success w-100">Punten bekijken</a>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+@foreach (var kind in Model.Kinderen)
+{
+    var kindReizen = Model.Reizen.Where(d => d.Kind.Id == kind.Id).ToList();
+
+    if (kindReizen.Any())
+    {
+        <h2 class="mt-3">Ingeschreven reizen voor @kind.Voornaam: </h2>
+   
+        <div class="row">
+        @foreach (var deelnemer in kindReizen)
+        {
+           
+                <div class="col-md-4">
+                    <div class="card mb-4" style="height: 400px; display: flex; flex-direction: column;">
+                        <img src="~/images/@deelnemer.Groepsreis.Bestemming.Fotos.FirstOrDefault()?.Naam" class="card-img-top" alt="foto bestemming" style="height: 150px; object-fit: cover;">
+                        <div class="card-body" style="flex: 1; display: flex; flex-direction: column;">
+                                <h5 class="card-title">@deelnemer.Groepsreis.Bestemming.BestemmingsNaam</h5>
+                                <p class="card-text">@deelnemer.Groepsreis.Bestemming.Beschrijving</p>
+                                <p class="card-text"><small class="text-muted">Begindatum: @deelnemer.Groepsreis.BeginDatum.ToShortDateString()</small></p>
+                                <p class="card-text"><small class="text-muted">Einddatum: @deelnemer.Groepsreis.EindDatum.ToShortDateString()</small></p>
+                                <a asp-controller="Details" asp-action="Detail" asp-route-id=@deelnemer.Groepsreis.Id class="btn btn-success w-100 mt-auto">Reis Bekijken</a>
+                            </div>
+                    </div>
+                </div>
+        }
+        </div>
+    }
+    else
+    {
+        <h2 class="mt-5">Nog geen ingeschreven reizen voor @kind.Voornaam.</h2>
+    }
+}
+
+
+
+<h3 class="mt-5">Alle beschikbare groepsreizen:</h3>
+<div class="row">
+    @foreach (var groepsreis in Model.Groepsreizen)
+    {
+        <div class="col-md-4">
+            <div class="card mb-4" style="height: 400px; display: flex; flex-direction: column;">
+                <img src="~/images/@groepsreis.Bestemming.Fotos.FirstOrDefault()?.Naam" class="card-img-top" alt="foto bestemming" style="height: 150px; object-fit: cover;">
+                <div class="card-body" style="flex: 1; display: flex; flex-direction: column;">
+                    <h5 class="card-title">@groepsreis.Bestemming.BestemmingsNaam</h5>
+                    <p class="card-text">@groepsreis.Bestemming.Beschrijving</p>
+                    <p class="card-text"><small class="text-muted">Begindatum: @groepsreis.BeginDatum.ToShortDateString()</small></p>
+                    <p class="card-text"><small class="text-muted">Einddatum: @groepsreis.EindDatum.ToShortDateString()</small></p>
+                    <a asp-controller="Details" asp-action="Detail" asp-route-id=@groepsreis.Id class="btn btn-success w-100">Reis Bekijken</a>
+
+                </div>
+            </div>
+        </div>
+    }
+</div>
+
+  
+
+@if (User.IsInRole("monitor") ||  User.IsInRole("admin"))
+{
+    <h3 class="mt-5">Ingeschreven Reizen als monitor voor @Model.User.Voornaam:</h3>
+
+    <div class="row">
+        @foreach (var monitorReis in Model.MonitorReizen)
+        {
+            <div class="col-md-4">
+                <div class="card mb-4" style="height: 400px; display: flex; flex-direction: column;">
+                    <img src="~/images/@monitorReis.Groepsreis.Bestemming.Fotos.FirstOrDefault()?.Naam" class="card-img-top" alt="foto bestemming" style="height: 150px; object-fit: cover;">
+                    <div class="card-body" style="flex: 1; display: flex; flex-direction: column;">
+                        <h5 class="card-title">@monitorReis.Groepsreis.Bestemming.BestemmingsNaam</h5>
+                        <p class="card-text">@monitorReis.Groepsreis.Bestemming.Beschrijving</p>
+                        <p class="card-text"><small class="text-muted">Begindatum: @monitorReis.Groepsreis.BeginDatum.ToShortDateString()</small></p>
+                        <p class="card-text"><small class="text-muted">Einddatum: @monitorReis.Groepsreis.EindDatum.ToShortDateString()</small></p>
+                        <a asp-controller="Details" asp-action="Detail" asp-route-id=@monitorReis.Groepsreis.Id class="btn btn-success w-100">Reis Bekijken</a>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+}
+
+
+
+@if (User.IsInRole("monitor") || User.IsInRole("admin"))
+{
+    <h3 class="mt-5">Ingeschreven opleidingen voor @Model.User.Voornaam:</h3>
+
+    <div class="row">
+        @foreach (var opleiding in Model.Opleidingen)
+        {
+            <div class="col-md-4">
+                <div class="card mb-4" style="height: 250px; display: flex; flex-direction: column;">
+                    <div class="card-body" style="flex: 1; display: flex; flex-direction: column;">
+                        <h5 class="card-title">@opleiding.Opleiding.Naam</h5>
+                        <p class="card-text">@opleiding.Opleiding.Beschrijving</p>
+                        <p class="card-text"><small class="text-muted">Begindatum: @opleiding.Opleiding.BeginDatum.ToShortDateString()</small></p>
+                        <p class="card-text"><small class="text-muted">Einddatum: @opleiding.Opleiding.EindDatum.ToShortDateString()</small></p>
+                        <a asp-controller="Opleiding" asp-action="Details" asp-route-id="@opleiding.Id" class="btn btn-success w-100">
+                            Bekijk details
+                        </a>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+}
+
+@if (User.IsInRole("beheerder") || User.IsInRole("verantwoordelijke") || User.IsInRole("admin"))
+{
+    <h3 class="mt-5">Overzicht voor de reizen die er aankomen:</h3>
+    <div class="row">
+        @foreach (var beheerdersGroepreis in Model.BeheerdersGroepreizen)
+        {
+            var hoofdmonitor = beheerdersGroepreis.Monitoren.FirstOrDefault(m => m.IsHoofdMonitor == 1);
+
+            <div class="col-md-4">
+                <div class="card mb-4" style="height: 550px; display: flex; flex-direction: column;">
+                    <img src="~/images/@beheerdersGroepreis.Bestemming.Fotos.FirstOrDefault()?.Naam" class="card-img-top" alt="foto bestemming" style="height: 150px; object-fit: cover;">
+                    <div class="card-body" style="flex: 1; display: flex; flex-direction: column;">
+                        <h5 class="card-title">@beheerdersGroepreis.Bestemming.BestemmingsNaam</h5>
+                        <p class="card-text">@beheerdersGroepreis.Bestemming.Beschrijving</p>
+
+                        @if (hoofdmonitor != null && hoofdmonitor.CustomUser != null)
+                        {
+                            <p class="card-text">Hoofdmonitor: @hoofdmonitor.CustomUser.Voornaam @hoofdmonitor.CustomUser.Naam</p>
+                        }
+                        else
+                        {
+                            <p class="card-text">Hoofdmonitor: Nog geen hoofdmonitor toegewezen</p>
+                        }
+
+                        <p class="card-text">Aantal deelnemers: @beheerdersGroepreis.Deelnemers.Count</p>
+                        <p class="card-text">Aantal monitoren: @beheerdersGroepreis.Monitoren.Count</p>
+                        <p class="card-text"><small class="text-muted">Begindatum: @beheerdersGroepreis.BeginDatum.ToShortDateString()</small></p>
+                        <p class="card-text"><small class="text-muted">Einddatum: @beheerdersGroepreis.EindDatum.ToShortDateString()</small></p>
+                        <a asp-controller="Details" asp-action="Detail" asp-route-id=@beheerdersGroepreis.Id class="btn btn-success w-100">Reis Bekijken</a>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+}
+
+
+

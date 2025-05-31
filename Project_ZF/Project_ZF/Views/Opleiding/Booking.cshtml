@@ -1,0 +1,61 @@
+﻿@model Project_ZF.ViewModels.OpleidingViewModel
+
+<title>Booking Opleiding</title>
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+
+<div class="container mt-5">
+        <h1 class="mb-4">Opleiding Boeken</h1>
+
+    <form asp-action="BookingPost" method="post" class="container mt-4 p-4 border rounded shadow-sm bg-light">
+        <!-- Hidden Input for ID -->
+        <input type="hidden" asp-for="Id" />
+
+        <!-- Titel -->
+        <h3 class="text-center mb-4">Boek een Opleiding</h3>
+
+        <!-- Naam van de opleiding -->
+        <div class="form-group">
+            <label asp-for="Naam" class="font-weight-bold">Opleiding:</label>
+            <input asp-for="Naam" readonly class="form-control-plaintext border-bottom" />
+        </div>
+
+        <!-- Beschrijving -->
+        <div class="form-group">
+            <label asp-for="Beschrijving" class="font-weight-bold">Beschrijving:</label>
+            <p class="form-control-plaintext">@Model.Beschrijving</p>
+        </div>
+
+        <!-- Periode -->
+        <div class="form-group">
+            <label class="font-weight-bold">Periode:</label>
+            <span class="form-control-plaintext border-bottom">@($"{Model.BeginDatum:dd-MM-yyyy} - {Model.EindDatum:dd-MM-yyyy}")</span>
+        </div>
+
+        <!-- Vereiste Opleiding -->
+        <div class="form-group">
+            <label class="font-weight-bold">Vereiste Opleiding:</label>
+            <p class="form-control-plaintext">@Model.VereisteOpleidingNaam</p>
+        </div>
+
+
+        <!-- Aantal Plaatsen -->
+        <div class="form-group">
+            <label asp-for="AantalPlaatsen" class="font-weight-bold">Aantal Plaatsen:</label>
+           @*  <input asp-for="AantalPlaatsen" type="number" class="form-control" min="1" max="@Model.AantalPlaatsen" /> *@
+            <small class="form-text text-muted">Maximaal aantal deelnemers: @Model.AantalPlaatsen.</small>
+            <span asp-validation-for="AantalPlaatsen" class="text-danger"></span>
+        </div>
+
+        <!-- Submit Button -->
+        <div class="form-group text-center">
+            <button type="submit" class="btn btn-success btn-lg">Bevestig Boeking</button>
+        </div>
+    </form>
+    <a class="btn btn-secondary mt-3" asp-action="Index">Terug</a>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

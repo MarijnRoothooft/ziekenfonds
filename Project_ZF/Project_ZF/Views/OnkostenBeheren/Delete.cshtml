@@ -1,0 +1,57 @@
+﻿@model Project_ZF.Models.Onkosten
+
+<title>Onkosten Verwijderen</title>
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+
+<div class="container mt-5">
+    <h1 class="mb-4 text-center text-danger">Onkosten Verwijderen</h1>
+    <p>Weet je zeker dat je deze onkosten wilt verwijderen?</p>
+
+    <table class="table table-bordered table-hover shadow-sm bg-white">
+        <tr>
+            <th style="width: 30%;">ID</th>
+            <td>@Model.Id</td>
+        </tr>
+        <tr>
+            <th>Bestemming</th>
+            <td>@(Model.Groepsreis?.Bestemming?.BestemmingsNaam ?? "Geen bestemming")</td>
+        </tr>
+        <tr>
+            <th>Titel</th>
+            <td>@Model.Titel</td>
+        </tr>
+        <tr>
+            <th>Omschrijving</th>
+            <td>@Model.Omschrijving</td>
+        </tr>
+        <tr>
+            <th>Bedrag</th>
+            <td>@Model.Bedrag.ToString("C", System.Globalization.CultureInfo.GetCultureInfo("nl-NL"))</td>
+        </tr>
+        <tr>
+            <th>Datum</th>
+            <td>@Model.Datum.ToString("yyyy-MM-dd")</td>
+        </tr>
+        <tr>
+            <th>Foto</th>
+            <td>
+                @if (!string.IsNullOrEmpty(Model.Foto))
+                {
+                    <img src="@Model.Foto" alt="Foto" class="img-thumbnail" style="max-width: 200px;" />
+                }
+                else
+                {
+                    <span class="text-muted">Geen foto beschikbaar.</span>
+                }
+            </td>
+        </tr>
+    </table>
+
+    <form asp-action="Delete" method="post">
+        <input type="hidden" asp-for="Id" />
+        <div class="d-flex justify-content-between mt-4">
+            <button type="submit" class="btn btn-danger btn-lg w-50 me-2">Verwijderen</button>
+            <a asp-action="Index" class="btn btn-secondary btn-lg w-50 ms-2">Annuleren</a>
+        </div>
+    </form>
+</div>

@@ -1,0 +1,71 @@
+﻿@using Project_ZF.ViewModels;
+
+@model AccountViewModel
+
+<div class="container mt-4">
+    <form asp-action="Index" method="get" class="row g-3 align-items-center">
+        <div class="col-md-3">
+            <label for="Naam" class="form-label">Naam</label>
+            <input type="text" asp-for="Naam" class="form-control" placeholder="Naam" />
+        </div>
+        <div class="col-md-3">
+            <label for="Voornaam" class="form-label">Voornaam</label>
+            <input type="text" asp-for="Voornaam" class="form-control" placeholder="Voornaam" />
+        </div>
+        <div class="col-md-3">
+            <label for="MinLeeftijd" class="form-label">Min Leeftijd</label>
+            <input type="number" asp-for="MinLeeftijd" class="form-control" placeholder="Min Leeftijd" />
+        </div>
+        <div class="col-md-3">
+            <label for="MaxLeeftijd" class="form-label">Max Leeftijd</label>
+            <input type="number" asp-for="MaxLeeftijd" class="form-control" placeholder="Max Leeftijd" />
+        </div>
+        <div class="col-12">
+            <button type="submit" class="btn btn-success">Zoeken</button>
+        </div>
+    </form>
+</div>
+
+
+
+<div class="container">
+    <div class="row">
+        @foreach (var account in Model.Accounts)
+        {
+            <div class="col-md-4 mt-4">
+                <div class="card mb-4">
+                    <div class="card-body">
+                        <h5 class="card-title">@account.Voornaam @account.Naam</h5>
+                        <p class="card-text">
+                            <strong>Straat:</strong> @account.Straat @account.Huisnummer<br />
+                            <strong>Gemeente:</strong> @account.Gemeente<br />
+                            <strong>Postcode:</strong> @account.Postcode<br />
+                            <strong>Geboortedatum:</strong> @account.GeboorteDatum?.ToString("dd-MM-yyyy")<br />
+                            <strong>Huisdokter:</strong> @account.Huisdokter<br />
+                            <strong>Email:</strong> @account.Email<br />
+                            <strong>Telefoonnummer:</strong> @account.TelefoonNummer<br />
+                            <strong>Rekeningnummer:</strong> @account.RekeningNummer<br />
+                            <strong>Actief:</strong> @(account.IsActief ? "Actief" : "Niet Actief")<br />
+                            <strong>Leeftijd:</strong> @(Model.BerekenLeeftijd(account.GeboorteDatum.Value))<br />
+                            <strong>Aantal punten:</strong> @(account.AantalPunten)
+                        </p>
+                        <p>
+                            <strong>Rol:</strong>
+                            @if (Model.UserRoles.ContainsKey(account.Id) && Model.UserRoles[account.Id].Any())
+                            {
+                                <span>
+                                    @string.Join(", ", Model.UserRoles[account.Id])
+                                </span>
+                            }
+                            else
+                            {
+                                <span>Geen rol toegewezen</span>
+                            }
+                        </p>
+                    </div>
+                    <a asp-action="Aanpassen" asp-route-id="@account.Id" class="btn btn-success">Rol aanpassen</a>
+                </div>
+            </div>
+        }
+    </div>
+</div>

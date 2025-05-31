@@ -1,0 +1,48 @@
+﻿@model Project_ZF.ViewModels.OpleidingViewModel
+
+<title>Opleiding Details</title>
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+
+<div class="container mt-5">
+    <h1 class="mb-4 text-center">Opleiding Details</h1>
+
+    <table class="table table-bordered table-hover shadow-sm bg-white">
+        <thead class="thead-light">
+            <tr>
+                <th scope="col" style="width: 30%;">Kenmerk</th>
+                <th scope="col" style="width: 70%;">Details</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <th scope="row">Naam</th>
+                <td>@Model.Naam</td>
+            </tr>
+            <tr>
+                <th scope="row">Beschrijving</th>
+                <td>@Model.Beschrijving</td>
+            </tr>
+            <tr>
+                <th scope="row">Begin Datum</th>
+                <td>@Model.BeginDatum.ToString("dd-MM-yyyy")</td>
+            </tr>
+            <tr>
+                <th scope="row">Eind Datum</th>
+                <td>@Model.EindDatum.ToString("dd-MM-yyyy")</td>
+            </tr>
+            <tr>
+                <th scope="row">Aantal Plaatsen</th>
+                <td>@Model.AantalPlaatsen</td>
+            </tr>
+            <tr>
+                <th scope="row">Opleiding Vereist ID</th>
+                <td>@Model.OpleidingVereistId</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <div class="d-flex justify-content-between mt-4">
+        <a class="btn btn-primary btn-lg w-50 me-2" asp-action="Edit" asp-route-id="@Model.Id">Aanpassen</a>
+        <a class="btn btn-secondary btn-lg w-50 ms-2" asp-action="Index">Terug</a>
+    </div>
+</div>

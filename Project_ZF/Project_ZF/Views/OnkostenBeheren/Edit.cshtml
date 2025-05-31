@@ -1,0 +1,99 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@model Project_ZF.Models.Onkosten
+
+<title>Onkosten Bewerken</title>
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+
+<div class="container mt-5">
+    <h1 class="mb-4 text-center">Onkosten aanpassen</h1>
+
+    <form asp-action="Edit" method="post" enctype="multipart/form-data" class="p-4 bg-light rounded shadow-sm">
+    <input type="hidden" asp-for="Id" />
+
+    <!-- Rij 1 -->
+    <div class="row mb-3">
+        <div class="col-md-6">
+            <div class="form-group">
+                <label asp-for="GroepsreisId" class="form-label">Bestemming</label>
+                <select asp-for="GroepsreisId" class="form-control" asp-items="ViewBag.Bestemmingen">
+                    <option value="">-- Selecteer een Bestemming --</option>
+                </select>
+                <span asp-validation-for="GroepsreisId" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="form-group">
+                <label asp-for="Titel" class="form-label">Titel</label>
+                <input asp-for="Titel" class="form-control" />
+                <span asp-validation-for="Titel" class="text-danger"></span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Rij 2 -->
+    <div class="row mb-3">
+        <div class="col-md-6">
+            <div class="form-group">
+                <label asp-for="Omschrijving" class="form-label">Beschrijving</label>
+                <textarea asp-for="Omschrijving" class="form-control" rows="1"></textarea>
+                <span asp-validation-for="Omschrijving" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="form-group">
+                <label asp-for="Bedrag" class="form-label">Bedrag</label>
+                <input asp-for="Bedrag" class="form-control" />
+                <span asp-validation-for="Bedrag" class="text-danger"></span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Rij 3 -->
+    <div class="row mb-3">
+        <div class="col-md-6">
+            <div class="form-group">
+                <label asp-for="Datum" class="form-label">Datum</label>
+                <input asp-for="Datum" type="date" class="form-control" />
+                <span asp-validation-for="Datum" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="form-group">
+                <label for="Foto" class="form-label">Foto</label>
+                <input type="file" name="Foto" class="form-control" />
+                <span asp-validation-for="Foto" class="text-danger"></span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Actieknoppen -->
+    <div class="row">
+        <div class="col-md-6">
+            <button type="submit" class="btn btn-primary w-100">Opslaan</button>
+        </div>
+        <div class="col-md-6">
+            <a class="btn btn-secondary w-100" asp-action="Index">Terug</a>
+        </div>
+    </div>
+</form>
+
+</div>
+
+@section Scripts {
+   
+    @await Html.PartialAsync("_ValidationScriptsPartial")
+    <script>
+        $.validator.methods.range = function (value, element, param) {
+            var globalizedValue = value.replace(",", ".");
+            return this.optional(element) || (globalizedValue >= param[0] && globalizedValue <= param[1]);
+        };
+
+        $.validator.methods.number = function (value, element) {
+            return this.optional(element) || /^-?(?:\d+|\d{1,3}(?:\.\d{3})*)(?:,\d+)?$/.test(value);
+        };
+    </script>
+     <script src="~/js/onkostenBeheren.js"></script>
+}
+

@@ -1,0 +1,48 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+@using Project_ZF.ViewModels;
+
+@model IEnumerable<Project_ZF.ViewModels.MonitorViewModel>
+
+
+@{
+    ViewData["Title"] = "Monitor";
+}
+
+
+<!DOCTYPE html>
+<hr />
+
+<body>
+
+<div class="container">
+
+    <div class="row">
+            @if (Model == null)
+            {
+                <strong>Schrijf u in als monitor om te kijken welke medemonitoren mee gaan.</strong> 
+
+            }else{
+            @foreach (var monitor in Model)
+        {       
+            <div class="col-md-4">
+                <div class="card mb-4">
+                    <div class="card-body">
+                        <h5 class="card-title">@monitor.CustomUser.Voornaam @monitor.CustomUser.Naam</h5>
+                        <p class="card-text">
+                                <strong>Leeftijd:</strong> @monitor.Age<br />
+                            <strong>Email:</strong> @monitor.CustomUser.Email<br />
+                            <strong>Telefoonnummer:</strong> @monitor.CustomUser.TelefoonNummer<br />
+                        </p>
+
+                    </div>
+                </div>
+            </div>
+        }}
+    </div>
+    
+</div>
+</body>

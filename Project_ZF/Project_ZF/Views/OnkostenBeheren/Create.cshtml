@@ -1,0 +1,57 @@
+﻿@model Project_ZF.ViewModels.OnkostenCreateViewModel
+
+<title>Onkosten Creëren</title>
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+
+<div class="container mt-5">
+    <h1 class="mb-4">Onkosten Creëren</h1>
+
+    <form asp-action="Create" method="post" enctype="multipart/form-data">
+        <div class="form-group">
+            <label for="GroepsreisId">Bestemming</label>
+            <select asp-for="GroepsreisId" class="form-control" asp-items="ViewBag.Bestemmingen">
+                <option value="">-- Selecteer een Bestemming --</option>
+            </select>
+            <span asp-validation-for="GroepsreisId" class="text-danger"></span>
+        </div>
+
+        <div class="form-group">
+            <label asp-for="Titel" class="control-label"></label>
+            <input asp-for="Titel" class="form-control" />
+            <span asp-validation-for="Titel" class="text-danger"></span>
+        </div>
+
+        <div class="form-group">
+            <label asp-for="Omschrijving" class="control-label"></label>
+            <textarea asp-for="Omschrijving" class="form-control"></textarea>
+            <span asp-validation-for="Omschrijving" class="text-danger"></span>
+        </div>
+
+        <div class="form-group">
+            <label asp-for="Bedrag" class="control-label"></label>
+            <input asp-for="Bedrag" class="form-control" />
+            <span asp-validation-for="Bedrag" class="text-danger"></span>
+        </div>
+
+        <div class="form-group">
+            <label asp-for="Datum" class="control-label"></label>
+            <input asp-for="Datum" type="date" class="form-control" />
+            <span asp-validation-for="Datum" class="text-danger"></span>
+        </div>
+
+        <div class="form-group">
+            <label asp-for="Foto" class="control-label">Foto (optioneel)</label>
+            <input asp-for="Foto" type="file" class="form-control-file" />
+            <span asp-validation-for="Foto" class="text-danger"></span>
+        </div>
+
+        <button type="submit" class="btn btn-primary">Opslaan</button>
+        <a class="btn btn-secondary" href="javascript:history.back()">Annuleren</a>
+    </form>
+</div>
+@section Scripts {
+    @await Html.PartialAsync("_ValidationScriptsPartial")
+}
+
+
+

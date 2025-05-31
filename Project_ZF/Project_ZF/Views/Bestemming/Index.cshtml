@@ -1,0 +1,117 @@
+﻿@model IEnumerable<Project_ZF.ViewModels.BestemmingViewModel>
+
+<title>Bestemmingen</title>
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+
+<div class="container mt-5">
+    <h1 class="mb-4">Bestemmingen</h1>
+
+    @foreach (var bestemming in Model)
+    {
+        <table class="table table-bordered mb-4">
+            <thead class="thead-dark">
+                <tr>
+                    <th>Code</th>
+                    <th>Naam</th>
+                    <th>Beschrijving</th>
+                    <th>Leeftijd</th>
+                    <th>Fotos</th>
+                    <th>Acties</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>@bestemming.Code</td>
+                    <td>@bestemming.BestemmingsNaam</td>
+                    <td>@bestemming.Beschrijving</td>
+                    <td>@bestemming.LeeftijdRange</td>
+                    <td>
+                        @foreach (var foto in bestemming.Fotos)
+                        {
+                            <img src="~/images/@foto.Naam" alt="Foto" class="img-thumbnail" style="width:100px;height:auto;" />
+                        }
+                    </td>
+                    <td>
+                        <div><a class="btn btn-primary btn-sm mb-1" asp-action="Edit" asp-route-id="@bestemming.Id">Aanpassen</a></div>
+                        <div><a class="btn btn-danger btn-sm mb-1" asp-action="Delete" asp-route-id="@bestemming.Id">Verwijderen</a></div>
+                        <div><a class="btn btn-success btn-sm mb-1" asp-controller="Groepsreis" asp-action="AddGroepsreis" asp-route-id="@bestemming.Id">Nieuw groepsreis</a></div>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="6">
+                        <table class="table table-bordered">
+                            <thead class="thead-green">
+                                <tr>
+                                    <th>BeginDatum</th>
+                                    <th>EindDatum</th>
+                                    <th>Prijs</th>
+                                    <th>Punten</th>
+                                    <th>Deelnemers</th>
+                                    <th>Monitoren</th>
+                                    <th>Activiteiten</th>
+                                    <th>Acties</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var groepsreis in bestemming.Groepsreizen)
+                                {
+                                    <tr>
+                                        <td>@groepsreis.BeginDatum.ToShortDateString()</td>
+                                        <td>@groepsreis.EindDatum.ToShortDateString()</td>
+                                        <td>@groepsreis.Prijs</td>
+                                        <td>@groepsreis.StandaardPunten</td>
+                                        <td>
+                                            @foreach (var deelnemer in groepsreis.Deelnemers)
+                                            {
+                                                <div>@deelnemer</div>
+                                            }
+                                        </td>
+                                        <td>
+                                            @foreach (var monitor in groepsreis.Monitoren)
+                                            {
+                                                <div>@monitor</div>
+                                            }
+                                        </td>
+                                        <td>
+                                            @foreach (var programma in groepsreis.Programmas)
+                                            {
+                                                <div>@programma.ActiviteitNaam</div>
+                                            }
+                                        </td>
+                                        <td>
+                                            @if (!groepsreis.Deelnemers.Any() && !groepsreis.Monitoren.Any())
+                                            {
+                                                <form asp-controller="Groepsreis" asp-action="DeleteGroepsreis" method="post" onsubmit="return confirm('Weet je zeker dat je deze groepsreis wilt verwijderen?');">
+                                                    <input type="hidden" name="id" value="@groepsreis.Id" />
+                                                    <button type="submit" class="btn btn-danger btn-sm">Verwijderen</button>
+                                                    <div><a class="btn btn-success btn-sm mb-1" asp-controller="Groepsreis" asp-action="EditGroepsreis" asp-route-id="@groepsreis.Id">Aanpassen</a></div>
+                                                </form>
+                                            }
+                                            <div><a class="btn btn-info btn-sm mb-1" asp-controller="Activiteit" asp-action="index" asp-route-groepsreisId="@groepsreis.Id">Activiteit toevoegen</a></div>
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    }
+    <div class="mt-3">
+        <a class="btn btn-success" asp-action="Create">Nieuwe Bestemming</a> 
+        <button type="button" class="btn btn-secondary" onclick="history.back()">Terug</button>
+        <a class="btn btn-info" asp-controller="Activiteit" asp-action="index">Activiteiten</a>
+    </div>
+</div>
+
+<style>
+    .img-thumbnail {
+        transition: transform 0.3s ease;
+    }
+
+        .img-thumbnail:hover {
+            transform: scale(1.25);
+            z-index: 10;
+        }
+</style>

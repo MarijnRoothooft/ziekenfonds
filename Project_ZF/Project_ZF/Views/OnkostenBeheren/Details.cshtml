@@ -1,0 +1,61 @@
+﻿@model dynamic
+
+<title>Onkosten Details</title>
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+
+<div class="container mt-5">
+    <h1 class="mb-4 text-center">Onkosten Details</h1>
+
+    <table class="table table-bordered table-hover shadow-sm bg-white">
+        <thead class="thead-light">
+            <tr>
+                <th scope="col" style="width: 30%;">Kenmerk</th>
+                <th scope="col" style="width: 70%;">Details</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <th scope="row">ID</th>
+                <td>@Model.Id</td>
+            </tr>
+            <tr>
+                <th scope="row">Bestemming</th>
+                <td>@Model.BestemmingsNaam</td>
+            </tr>
+            <tr>
+                <th scope="row">Titel</th>
+                <td>@Model.Titel</td>
+            </tr>
+            <tr>
+                <th scope="row">Omschrijving</th>
+                <td>@Model.Omschrijving</td>
+            </tr>
+            <tr>
+                <th scope="row">Bedrag</th>
+                <td>@Model.Bedrag.ToString("C", System.Globalization.CultureInfo.GetCultureInfo("nl-NL"))</td>
+            </tr>
+            <tr>
+                <th scope="row">Datum</th>
+                <td>@Model.Datum.ToString("yyyy-MM-dd")</td>
+            </tr>
+            <tr>
+                <th scope="row">Foto</th>
+                <td>
+                    @if (!string.IsNullOrEmpty(Model.Foto))
+                    {
+                        <img src="@Model.Foto" alt="Foto" class="img-thumbnail" style="max-width: 200px;" />
+                    }
+                    else
+                    {
+                        <p class="text-muted">Geen foto beschikbaar.</p>
+                    }
+                </td>
+            </tr>
+        </tbody>
+    </table>
+
+    <div class="d-flex justify-content-between mt-4">
+        <a class="btn btn-primary btn-lg w-50 me-2" asp-action="Edit" asp-route-id="@Model.Id">Aanpassen</a>
+        <a class="btn btn-secondary btn-lg w-50 ms-2" asp-action="Index">Terug</a>
+    </div>
+</div>

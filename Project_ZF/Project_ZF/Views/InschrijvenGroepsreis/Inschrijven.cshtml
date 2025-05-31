@@ -1,0 +1,66 @@
+﻿@model Project_ZF.ViewModels.InschrijvenViewModel
+
+<head>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<div class="container">
+    <h1>Inschrijven voor @Model.BestemmingsNaam</h1>
+    <p>Vertrekdatum: @Model.VertrekDatum.ToString("dd-MM-yyyy")</p>
+    <p>Einddatum: @Model.EindDatum.ToString("dd-MM-yyyy")</p>
+    <p>Prijs: €@Model.Prijs</p>
+    <p>Punten: @Model.StandaardPunten</p>
+
+    @if (User.IsInRole("monitor") && !Model.GeregistreerdeMonitorenIds.Contains(User.FindFirstValue(ClaimTypes.NameIdentifier)))
+    {
+        <div class="card mb-3">
+            <div class="card-header">
+                Monitor Informatie
+            </div>
+            <div class="card-body">
+                <h5 class="card-title">@Model.User.Naam @Model.User.Voornaam</h5>
+                <p class="card-text">Straat: @Model.User.Straat @Model.User.Huisnummer</p>
+                <p class="card-text">Gemeente: @Model.User.Gemeente</p>
+                <p class="card-text">Postcode: @Model.User.Postcode</p>
+                <p class="card-text">Huisdokter: @Model.User.Huisdokter</p>
+                <p class="card-text">Email: @Model.User.Email</p>
+                <p class="card-text">Telefoonnummer: @Model.User.TelefoonNummer</p>
+            </div>
+            <form asp-action="InschrijvenMonitor" method="post">
+                <input type="hidden" name="GroepsreisId" value="@Model.GroepsreisId" />
+                <button type="submit" class="btn btn-primary">Inschrijven als Monitor</button>
+            </form>
+        </div>
+        
+    }
+
+    @if (Model.Kinderen.Any())
+    {
+        <h2>Kinderen Inschrijven</h2>
+        @foreach (var kind in Model.Kinderen)
+        {
+            <div class="card mb-3">
+                <div class="card-header">
+                    Kind Inschrijving
+                </div>
+                <div class="card-body">
+                    <h5 class="card-title">@kind.Naam @kind.Voornaam</h5>
+                    <p class="card-text">Geboortedatum: @kind.Geboortedatum.ToString("dd-MM-yyyy")</p>
+                    <p class="card-text">Allergieën: @kind.Allergieën</p>
+                    <p class="card-text">Medicatie: @kind.Medicatie</p>
+                    @if (Model.GeregistreerdeKinderenIds.Contains(kind.Id))
+                    {
+                        <button class="btn btn-secondary" disabled>Ingeschreven</button>
+                    }
+                    else
+                    {
+                        <form asp-action="InschrijvenKind" method="post">
+                            <input type="hidden" name="GroepsreisId" value="@Model.GroepsreisId" />
+                            <input type="hidden" name="KindId" value="@kind.Id" />
+                            <button type="submit" class="btn btn-primary">Inschrijven</button>
+                        </form>
+                    }
+                </div>
+            </div>
+        }
+    }
+</div>

@@ -1,0 +1,52 @@
+﻿@using Project_ZF.ViewModels;
+
+@model IEnumerable<Project_ZF.ViewModels.KindViewModel>
+
+
+<div class="container">
+    <div class="row">
+        @if (!Model.Any())
+        {
+            <div class="col-12 mt-4" >
+                <h2>Nog geen kinderen gelinkt aan dit account</h2>
+            </div>
+        }
+        else
+        {
+            @foreach (var kind in Model)
+            {
+                <div class="col-md-4">
+                    <div class="card mb-4 mt-4">
+                        <div class="card-body">
+                            <h5 class="card-title">@kind.Voornaam @kind.Naam</h5>
+                            <p class="card-text">
+                                <strong>Geboortedatum:</strong> @kind.Geboortedatum.ToString("dd-MM-yyyy")<br />
+                                <strong>Allergieën:</strong> @kind.Allergieën<br />
+                                <strong>Medicatie:</strong> @kind.Medicatie<br />
+                            </p>
+                            <div class="row">
+                                <div class="col-md-3">
+                                    <form asp-action="Wijzigen" method="get">
+                                        <input type="hidden" name="id" value="@kind.Id" />
+                                        <button type="submit" class="btn btn-primary btn-block">Wijzigen</button>
+                                    </form>
+                                </div>
+                                <div class="col-md-3">
+                                    <form asp-action="Verwijderen" method="post">
+                                        <input type="hidden" name="id" value="@kind.Id" />
+                                        <button type="submit" class="btn btn-danger btn-block">Verwijderen</button>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+        }
+    </div>
+    <div class="row">
+        <div class="col-12 mt-3">
+            <a asp-action="Toevoegen" class="btn btn-success">Kind Toevoegen</a>
+        </div>
+    </div>
+</div>

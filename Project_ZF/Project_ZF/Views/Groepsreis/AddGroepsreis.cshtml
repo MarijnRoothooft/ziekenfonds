@@ -1,0 +1,35 @@
+﻿@model Project_ZF.ViewModels.GroepsreisCreateViewModel
+
+@{
+    ViewData["Title"] = "Groepsreis Toevoegen";
+}
+
+<h2>Groepsreis Toevoegen aan @Model.BestemmingsNaam</h2>
+
+<form asp-action="AddGroepsreis" method="post">
+    <div class="form-group">
+        <label asp-for="BeginDatum" class="control-label"></label>
+        <input asp-for="BeginDatum" class="form-control" />
+        <span asp-validation-for="BeginDatum" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="EindDatum" class="control-label"></label>
+        <input asp-for="EindDatum" class="form-control" />
+        <span asp-validation-for="EindDatum" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="Prijs" class="control-label"></label>
+        <input asp-for="Prijs" class="form-control" />
+        <span asp-validation-for="Prijs" class="text-danger"></span>
+    </div>
+    <div class="form-group mb-3">
+        <label asp-for="StandaardPunten" class="control-label"></label>
+        <input asp-for="StandaardPunten" class="form-control" />
+        <span asp-validation-for="StandaardPunten" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <input type="hidden" asp-for="GroepsreisId" />
+        <input type="submit" value="Opslaan" class="btn btn-success btn-sm mb-1" />
+        <a asp-controller="Bestemming" asp-action="Index" class="btn btn-secondary btn-sm mb-1">Annuleren</a>
+    </div>
+</form>

@@ -1,0 +1,127 @@
+﻿@model Project_ZF.ViewModels.DetailsViewModel
+
+<head>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<script>
+    $(document).ready(function () {
+        var vertrekDatum = new Date('@Model.VertrekDatum.ToString("yyyy-MM-dd")');
+        var vandaag = new Date();
+        vandaag.setDate(vandaag.getDate() + 3); // Voeg 3 dagen toe aan de huidige datum
+
+        if (vertrekDatum < vandaag) {
+            alert("Deze reis is reeds verlopen.");
+            $("#inschrijfKnop").prop("disabled", true);
+        }
+    });
+</script>
+<div class="card">
+    <div class="card-body">
+        <div class="row d-flex">
+            <div class="col-md-6 d-flex">
+                <div class="card flex-fill">
+                    <h1>@Model.BestemmingsNaam</h1>
+                    <img src="~/images/@Model.Naam" alt="@Model.Naam" class="img-thumbnail" />
+                    <div class="card-body">
+                        <h5 class="card-title">@Model.BestemmingsNaam</h5>
+                        <p class="card-text">@Model.Beschrijving</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6 d-flex">
+                <div class="card flex-fill">
+                    <div class="card-body">
+                        <p>@Model.Beschrijving</p>
+                        <p><strong>Minimumleeftijd:</strong> @Model.MinLeeftijd</p>
+                        <p><strong>Maximumleeftijd:</strong> @Model.MaxLeeftijd</p>
+                        <p><strong>Vertrekdatum:</strong> @Model.VertrekDatum.ToString("dd-MM-yyyy")</p>
+                        <p><strong>Einddatum:</strong> @Model.EindDatum.ToString("dd-MM-yyyy")</p>
+                        <p><strong>Prijs:</strong> €@Model.Prijs</p>
+                        <p><strong>Punten:</strong> @Model.StandaardPunten</p>
+                        <h3>Activiteiten</h3>
+                        <ul>
+                            @foreach (var activiteit in Model.Activiteiten)
+                            {
+                                <li><strong>@activiteit.Naam:</strong> @activiteit.Beschrijving</li>
+                            }
+                        </ul>
+                        <div class="mt-3">
+                            <button id="inschrijfKnop" type="button" class="btn btn-success" onclick="location.href='@Url.Action("Inschrijven", "InschrijvenGroepsreis", new { id = Model.GroepsreisId })'">Inschrijven voor Reis</button>
+                            @if (User.IsInRole("monitor"))
+                            {
+                                <button type="button" class="btn btn-success" onclick="location.href='@Url.Action("Index", "Monitor", new { id = Model.Id })'">Monitors bekijken</button>
+                            }
+                            
+                            <button type="button" class="btn btn-secondary" onclick="history.back()">Terug</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="mt-3">
+            <h3>Reviews</h3>
+            <button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#reviewsAccordion" aria-expanded="false" aria-controls="reviewsAccordion">
+                Toon Reviews
+            </button>
+            <div class="collapse" id="reviewsAccordion">
+                <div style="max-height: 200px; overflow-y: auto;">
+                    <ul>
+                        @foreach (var review in Model.EerdereReviews)
+                        {
+                            <li>
+                                <strong>Score:</strong> @review.ReviewScore<br />
+                                <strong>Review:</strong> @review.Review<br />
+                                <strong>Deelnemer:</strong> @review.KindNaam
+                                @if (review.KindId == Model.KindId)
+                                {
+                                    <form asp-action="DeleteReview" method="post" style="display:inline;">
+                                        <input type="hidden" name="DeelnemerId" value="@review.DeelnemerId" />
+                                        <input type="hidden" name="KindId" value="@review.KindId" />
+                                        <input type="hidden" name="GroepsreisId" value="@Model.GroepsreisId" />
+                                        <input type="hidden" name="FotoId" value="@Model.Id" />
+                                        <button type="submit" class="btn btn-danger btn-sm">Verwijder</button>
+                                    </form>
+                                }
+                            </li>
+                        }
+                    </ul>
+                </div>
+
+                <div class="card">
+                    <div class="card-body">
+                        @if (ViewBag.ReviewPlaced == true)
+                        {
+                            <p>Bedankt voor het plaatsen van je review!</p>
+                        }
+                        else if (Model.HeeftKind)
+                        {
+                            <h2>Review Plaatsen</h2>
+
+                            <form asp-action="AddReview" method="post">
+                                <div class="form-group">
+                                    <label for="ReviewScore">Review Score</label>
+                                    <input type="number" class="form-control" id="ReviewScore" name="ReviewScore" min="1" max="5" required />
+                                </div>
+                                <div class="form-group">
+                                    <label for="Review">Review</label>
+                                    <textarea class="form-control" id="Review" name="Review" required></textarea>
+                                </div>
+                                <div class="form-group">
+                                    <label for="Opmerkingen">Opmerkingen</label>
+                                    <textarea class="form-control" id="Opmerkingen" name="Opmerkingen"></textarea>
+                                </div>
+                                <input type="hidden" name="DeelnemerId" value="@Model.DeelnemerId" />
+                                <input type="hidden" name="KindId" value="@Model.KindId" />
+                                <input type="hidden" name="GroepsreisId" value="@Model.GroepsreisId" />
+                                <input type="hidden" name="FotoId" value="@Model.Id" />
+                                <button type="submit" class="btn btn-primary">Plaats Review</button>
+                            </form>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

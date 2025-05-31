@@ -1,0 +1,37 @@
+﻿@using Project_ZF.ViewModels;
+
+@model BeloningToevoegenViewModel;
+
+<div class="container mt-3">
+    <h2>Beloning Toevoegen</h2>
+    <form asp-action="Create">
+        <div class="form-group">
+            <label asp-for="Naam"></label>
+            <input asp-for="Naam" class="form-control" />
+            <span asp-validation-for="Naam" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="Beschrijving"></label>
+            <input asp-for="Beschrijving" class="form-control" />
+            <span asp-validation-for="Beschrijving" class="text-danger"></span>
+
+            <div class="form-group mb-3">
+                <label asp-for="LevelId">Kies Level</label>
+                <select asp-for="LevelId" asp-items="@(new SelectList(Model.Levels, "Id", "Naam"))" class="form-control">
+                    <option value="">Selecteer een level</option>
+                </select>
+                <span asp-validation-for="LevelId" class="text-danger"></span>
+            </div>
+        </div>
+        
+        
+        <button type="submit" class="btn btn-success">Toevoegen</button>
+       
+    </form>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

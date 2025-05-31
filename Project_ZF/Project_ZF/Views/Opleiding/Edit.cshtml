@@ -1,0 +1,78 @@
+﻿@model Project_ZF.ViewModels.OpleidingViewModel
+
+<title>Edit Opleiding</title>
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+
+<div class="container mt-5">
+    <h1 class="mb-4 text-center">Opleiding aanpassen</h1>
+
+    <form asp-action="Edit" class="p-4 bg-light rounded shadow-sm">
+        <input type="hidden" asp-for="Id" />
+
+        <!-- Rij 1 -->
+        <div class="row mb-3">
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label asp-for="Naam" class="form-label">Naam</label>
+                    <input asp-for="Naam" class="form-control" />
+                    <span asp-validation-for="Naam" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label asp-for="Beschrijving" class="form-label">Beschrijving</label>
+                    <textarea asp-for="Beschrijving" class="form-control" rows="1"></textarea>
+                    <span asp-validation-for="Beschrijving" class="text-danger"></span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Rij 2 -->
+        <div class="row mb-3">
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label asp-for="BeginDatum" class="form-label">Begin Datum</label>
+                    <input asp-for="BeginDatum" type="date" class="form-control" />
+                    <span asp-validation-for="BeginDatum" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label asp-for="EindDatum" class="form-label">Eind Datum</label>
+                    <input asp-for="EindDatum" type="date" class="form-control" />
+                    <span asp-validation-for="EindDatum" class="text-danger"></span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Rij 3 -->
+        <div class="row mb-3">
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label asp-for="AantalPlaatsen" class="form-label">Aantal Plaatsen</label>
+                    <input asp-for="AantalPlaatsen" class="form-control" />
+                    <span asp-validation-for="AantalPlaatsen" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label asp-for="OpleidingVereistId" class="form-label">Opleiding Vereist ID</label>
+                    <input asp-for="OpleidingVereistId" class="form-control" />
+                    <span asp-validation-for="OpleidingVereistId" class="text-danger"></span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Actieknoppen -->
+        <div class="d-flex justify-content-between mt-4">
+            <button type="submit" class="btn btn-primary btn-lg w-50 me-2">Opslaan</button>
+            <a asp-action="Index" class="btn btn-secondary btn-lg w-50 ms-2">Terug</a>
+        </div>
+    </form>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

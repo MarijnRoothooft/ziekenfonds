@@ -1,0 +1,35 @@
+﻿@using Project_ZF.ViewModels;
+
+@model MonitorBeheerViewModel
+
+<div class="container">
+    <div class="row">
+        @foreach (var monitor in Model.Monitoren)
+        {
+            <div class="col-md-4 mt-4">
+                <div class="card mb-4">
+                    <div class="card-body">
+                        <h5 class="card-title">@monitor.Voornaam @monitor.Naam</h5>
+                        <p class="card-text">
+                            <strong>Actief:</strong> @(monitor.IsActief ? "Actief" : "Niet Actief")<br />
+                            <strong>Rol:</strong> @(monitor.IsHoofdMonitor ? "Hoofdmonitor" : "Monitor")<br />
+                            <strong>Leeftijd:</strong>
+                            @if (monitor.GeboorteDatum.HasValue)
+                            {
+                                @(Model.BerekenLeeftijd(monitor.GeboorteDatum.Value))
+                            }
+                            else
+                            {
+                                <span>Onbekend</span>
+                            }
+                        </p>
+                        <div class="d-flex justify-content-left">
+                            <a asp-action="Bewerken" asp-route-id="@monitor.Id" class="btn btn-success btn-md mx-1">Monitor aanpassen</a>
+                            <a asp-action="Details" asp-route-id="@monitor.Id" class="btn btn-primary btn-md mx-1">Details bekijken</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</div>

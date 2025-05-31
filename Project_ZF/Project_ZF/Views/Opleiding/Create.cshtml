@@ -1,0 +1,94 @@
+﻿@model Project_ZF.ViewModels.OpleidingViewModel
+
+<title>Create Opleiding</title>
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+
+<h1 class="mt-4">Opleiding Creeren</h1>
+
+<form asp-action="Create" method="post" class="p-4 bg-light rounded shadow-sm">
+    <!-- Rij 1 -->
+    <div class="row mb-3">
+        <div class="col-md-6">
+            <div class="form-group">
+                <label asp-for="Naam" class="form-label">Naam</label>
+                <input asp-for="Naam" class="form-control" />
+                <span asp-validation-for="Naam" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="form-group">
+                <label asp-for="Beschrijving" class="form-label">Beschrijving</label>
+                <textarea asp-for="Beschrijving" class="form-control" rows="1"></textarea>
+                <span asp-validation-for="Beschrijving" class="text-danger"></span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Rij 2 -->
+    <div class="row mb-3">
+        <div class="col-md-6">
+            <div class="form-group">
+                <label asp-for="BeginDatum" class="form-label">Begin Datum</label>
+                <input asp-for="BeginDatum" type="date" class="form-control" />
+                <span asp-validation-for="BeginDatum" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="form-group">
+                <label asp-for="EindDatum" class="form-label">Eind Datum</label>
+                <input asp-for="EindDatum" type="date" class="form-control" />
+                <span asp-validation-for="EindDatum" class="text-danger"></span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Rij 3 -->
+    <div class="row mb-3">
+        <div class="col-md-6">
+            <div class="form-group">
+                <label asp-for="AantalPlaatsen" class="form-label">Aantal Plaatsen</label>
+                <input asp-for="AantalPlaatsen" class="form-control" type="number" min="0" max="150" />
+                <span asp-validation-for="AantalPlaatsen" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="form-group">
+                <label asp-for="OpleidingVereistId" class="form-label">Vereiste Opleiding ID</label>
+                <input asp-for="OpleidingVereistId" class="form-control" />
+                <span asp-validation-for="OpleidingVereistId" class="text-danger"></span>
+            </div>
+      
+        </div>
+    </div>
+
+    <!-- Actieknoppen -->
+    <div class="row">
+        <div class="col-md-6">
+            <button type="submit" class="btn btn-primary w-100">Opslaan</button>
+        </div>
+        <div class="col-md-6">
+            <a asp-action="Index" class="btn btn-secondary w-100">Annuleren</a>
+        </div>
+    </div>
+</form>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+        <script>
+            document.addEventListener("DOMContentLoaded", function () {
+                const inputField = document.querySelector('input[name="GroepsreisId"]');
+
+                inputField.addEventListener("input", function () {
+                    const value = parseInt(inputField.value, 10);
+                    if (value < 0) inputField.value = 0;           // Zet waarde op 0 als het lager is
+                    if (value > 150) inputField.value = 150;       // Zet waarde op 150 als het hoger is
+                });
+            });
+        </script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.3/localization/messages_nl.js"></script>
+    }
+}
+
+
+

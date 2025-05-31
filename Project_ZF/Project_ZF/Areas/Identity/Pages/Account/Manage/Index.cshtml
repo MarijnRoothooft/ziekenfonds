@@ -1,0 +1,78 @@
+﻿@page
+@model IndexModel
+@{
+    ViewData["Title"] = "Profiel";
+    ViewData["ActivePage"] = ManageNavPages.Index;
+}
+
+<div class="d-flex justify-content-between align-items-center">
+    <h3>@ViewData["Title"]</h3>
+    <a asp-controller="Kind" asp-action="Index" asp-route-id="@User.FindFirstValue(ClaimTypes.NameIdentifier)" class="btn btn-success">Beheer kind</a>
+</div>
+<partial name="_StatusMessage" for="StatusMessage" />
+<div class="row">
+    <div class="col-md-6">
+        <form id="profile-form" method="post">
+            <div asp-validation-summary="ModelOnly" class="text-danger" role="alert"></div>
+            <div class="form-floating mb-3">
+                <input asp-for="Username" class="form-control" placeholder="Please choose your username." disabled />
+                <label asp-for="Username" class="form-label"></label>
+            </div>
+            <div class="form-floating mb-3">
+                <input asp-for="Input.TelefoonNummer" class="form-control" placeholder="Telefoonnummer." />
+                <label asp-for="Input.TelefoonNummer" class="form-label"></label>
+                <span asp-validation-for="Input.TelefoonNummer" class="text-danger"></span>
+            </div>
+            <div class="form-floating mb-3">
+                <input asp-for="Input.Naam" class="form-control" />
+                <label asp-for="Input.Naam" class="form-label"></label>
+                <span asp-validation-for="Input.Naam" class="text-danger"></span>
+            </div>
+            <div class="form-floating mb-3">
+                <input asp-for="Input.Geboortedatum" class="form-control" />
+                <label asp-for="Input.Geboortedatum" class="form-label"></label>
+                <span asp-validation-for="Input.Geboortedatum" class="text-danger"></span>
+            </div>
+            <div class="form-floating mb-3">
+                <input asp-for="Input.Voornaam" class="form-control" />
+                <label asp-for="Input.Voornaam" class="form-label"></label>
+                <span asp-validation-for="Input.Voornaam" class="text-danger"></span>
+            </div>
+            <div class="form-floating mb-3">
+                <input asp-for="Input.Straat" class="form-control" />
+                <label asp-for="Input.Straat" class="form-label"></label>
+                <span asp-validation-for="Input.Straat" class="text-danger"></span>
+            </div>
+            <div class="form-floating mb-3">
+                <input asp-for="Input.Email" class="form-control" />
+                <label asp-for="Input.Email" class="form-label"></label>
+                <span asp-validation-for="Input.Email" class="text-danger"></span>
+            </div>
+            <div class="form-floating mb-3">
+                <input asp-for="Input.Gemeente" class="form-control" />
+                <label asp-for="Input.Gemeente" class="form-label"></label>
+                <span asp-validation-for="Input.Gemeente" class="text-danger"></span>
+            </div>
+            <div class="form-floating mb-3">
+                <input asp-for="Input.Huisdokter" class="form-control" />
+                <label asp-for="Input.Huisdokter" class="form-label"></label>
+                <span asp-validation-for="Input.Huisdokter" class="text-danger"></span>
+            </div>
+            <div class="form-floating mb-3">
+                <input asp-for="Input.Huisnummer" class="form-control" />
+                <label asp-for="Input.Huisnummer" class="form-label"></label>
+                <span asp-validation-for="Input.Huisnummer" class="text-danger"></span>
+            </div>
+            <div class="form-floating mb-3">
+                <input asp-for="Input.Postcode" class="form-control" />
+                <label asp-for="Input.Postcode" class="form-label"></label>
+                <span asp-validation-for="Input.Postcode" class="text-danger"></span>
+            </div>
+            <button id="update-profile-button" type="submit" class="green-button">Opslagen</button>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

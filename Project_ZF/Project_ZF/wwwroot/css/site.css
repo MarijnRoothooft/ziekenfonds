@@ -1,0 +1,109 @@
+html {
+  font-size: 14px;
+}
+
+@media (min-width: 768px) {
+  html {
+    font-size: 16px;
+  }
+}
+
+.btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
+  box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
+}
+
+html {
+  position: relative;
+  min-height: 100%;
+}
+
+body {
+  margin-bottom: 60px;
+}
+
+/*Project_ZF Kleuren*/
+
+/*color*/
+.green {color: #4D9F50;}
+.white {color: #FFFFFF;}
+.black {color: #121212;}
+.gray {color: #6F7789;}
+.terracotta {color: #EE684A}
+
+/*background-color*/
+.bg-green {background-color: #4D9F50;}
+
+.bg-white {background-color: #FFFFFF;}
+
+.bg-black {background-color: #121212;}
+
+.navbar-custom {
+    background-color: #4D9F50; /* Maak de navigatiebalk groen */
+    border: none; /* Verwijder de witte rand */
+}
+
+    .navbar-custom .nav-link {
+        color: white; /* Maak de tekst wit voor betere leesbaarheid */
+    }
+
+.dark-mode {
+    background-color: #121212;
+    color: white;
+}
+
+.light-mode {
+    background-color: white;
+    color: black;
+}
+.green-button {
+    background-color: #4D9F50;
+    color: #FFFFFF;
+    border-color: #4D9F50;
+    width: 100% !important;
+    display: inline-block;
+    font-weight: 400;
+    line-height: 1.5;
+    text-align: center;
+    text-decoration: none;
+    vertical-align: middle;
+    padding: .5rem 1rem;
+    margin: 0;
+    font-size: 1.25rem;
+    border-radius: .3rem;
+    transition: color .15s ease-in-out,background-color .15s ease-in-out,border-color .15s ease-in-out,box-shadow .15s ease-in-out;
+}
+
+.green-card {
+    background-color: #4D9F50; /* Groene tint voor de kaarten */
+    color: white; /* Witte tekst voor betere leesbaarheid */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Lichte schaduw voor light mode */
+    transition: box-shadow 0.3s ease; /* Voeg een overgang toe voor een vloeiend effect */
+}
+
+    .green-card:hover {
+        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2); /* Versterk de schaduw bij hover in light mode */
+    }
+
+.dark-mode .green-card {
+    box-shadow: 0 4px 8px rgba(255, 255, 255, 0.1); /* Witte schaduw voor dark mode */
+}
+
+    .dark-mode .green-card:hover {
+        box-shadow: 0 8px 16px rgba(255, 255, 255, 0.2); /* Versterk de witte schaduw bij hover in dark mode */
+    }
+
+.green-card .card-body {
+    background-color: #4D9F50; /* Zorg ervoor dat de body van de kaart ook groen is */
+}
+
+.fixed-size-img {
+    width: 100%; /* Zorgt ervoor dat de afbeelding de breedte van de kaart vult */
+    height: 200px; /* Pas de hoogte aan naar wens */
+    object-fit: cover; /* Zorgt ervoor dat de afbeelding de container vult zonder de verhoudingen te verstoren */
+}
+
+.carousel-img {
+    width: 100%; /* Zorgt ervoor dat de afbeelding de breedte van de carousel vult */
+    height: 400px; /* Twee keer zo hoog als de afbeeldingen in de kaarten */
+    object-fit: cover; /* Zorgt ervoor dat de afbeelding de container vult zonder de verhoudingen te verstoren */
+}

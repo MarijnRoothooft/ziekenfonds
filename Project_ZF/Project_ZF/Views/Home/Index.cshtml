@@ -1,0 +1,300 @@
+﻿@using Project_ZF.ViewModels
+@model HomePageViewModel
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Fotogalerij</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</head>
+
+
+<div class="container mt-4">
+    <form asp-action="Index" method="get" class="row g-3 align-items-center">
+        <div class="col-md-3">
+            <label for="Begindatum" class="form-label">Begindatum</label>
+            <input type="date" name="begindatum" class="form-control" placeholder="Begindatum" />
+        </div>
+        <div class="col-md-3">
+            <label for="Einddatum" class="form-label">Einddatum</label>
+            <input type="date" name="einddatum" class="form-control" placeholder="Einddatum" />
+        </div>
+        <div class="col-md-3">
+            <label for="MinLeeftijd" class="form-label">Min Leeftijd</label>
+            <input type="number" name="minLeeftijd" class="form-control" placeholder="Min Leeftijd" />
+        </div>
+        <div class="col-md-3">
+            <label for="MaxLeeftijd" class="form-label">Max Leeftijd</label>
+            <input type="number" name="maxLeeftijd" class="form-control" placeholder="Max Leeftijd" />
+        </div>
+        <div class="col-12">
+            <button type="submit" class="btn btn-success">Zoeken</button>
+        </div>
+    </form>
+</div>
+<body>
+    <div class="container mt-3">
+        <h1>Beschikbare Reizen</h1>
+        <div id="beschikbareReizenCarousel" class="carousel slide" data-ride="carousel">
+            <div class="carousel-inner">
+                @for (int i = 0; i < Model.BeschikbareGroepsreizen.Count; i += 3)
+                {
+                    <div class="carousel-item @(i == 0 ? "active" : "")">
+                        <div class="row">
+                            @for (int j = 0; j < 3; j++)
+                            {
+                                if (i + j < Model.BeschikbareGroepsreizen.Count)
+                                {
+                                    var groepsreis = Model.BeschikbareGroepsreizen[i + j];
+                                    var foto = Model.BeschikbareFotos.FirstOrDefault(f => f.Bestemming != null && f.Bestemming.Id == groepsreis.Bestemming.Id);
+                                    if (foto != null)
+                                    {
+                                        <div class="col-md-4">
+                                            <div class="card mb-4">
+                                                <a href="@Url.Action("Detail", "Details", new { id = groepsreis.Id })">
+                                                    <img src="~/images/@foto.Naam" class="card-img-top fixed-size-img" alt="@foto.Naam">
+                                                </a>
+                                                <div class="green-card card-body">
+                                                    <h5 class="card-title">@groepsreis.Bestemming.BestemmingsNaam</h5>
+                                                    <div class="accordion" id="accordionExample">
+                                                        <div class="card">
+                                                            <div class="card-header" id="headingOne">
+                                                                <h2 class="mb-0">
+                                                                    <button class="btn btn-link" type="button" data-toggle="collapse" data-target="#collapseOne@foto.Id" aria-expanded="true" aria-controls="collapseOne@foto.Id" data-href="@Url.Action("Detail", "Details", new { id = foto.Id })">
+                                                                        Meer info
+                                                                    </button>
+                                                                </h2>
+                                                            </div>
+                                                            <div id="collapseOne@foto.Id" class="collapse" aria-labelledby="headingOne" data-parent="#accordionExample">
+                                                                <div class="card-body">
+                                                                    <p>@groepsreis.Bestemming.Beschrijving</p>
+                                                                    <p><strong>Locatie:</strong> @groepsreis.Bestemming.BestemmingsNaam</p>
+                                                                    <p><strong>Prijs:</strong> €@groepsreis.Prijs</p>
+                                                                    <p><strong>Vertrekdatum:</strong> @groepsreis.BeginDatum.ToString("dd-MM-yyyy")</p>
+                                                                    <p><strong>Einddatum:</strong> @groepsreis.EindDatum.ToString("dd-MM-yyyy")</p>
+                                                                    <p><strong>Minimumleeftijd:</strong> @groepsreis.Bestemming.MinLeeftijd</p>
+                                                                    <p><strong>Maximumleeftijd:</strong> @groepsreis.Bestemming.MaxLeeftijd</p>
+                                                                    <p><strong>Activiteiten:</strong></p>
+                                                                    <ul>
+                                                                        @foreach (var programma in groepsreis.Programmas)
+                                                                        {
+                                                                            <li>@programma.Activiteit.Naam</li>
+                                                                        }
+                                                                    </ul>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    }
+                                }
+                            }
+                        </div>
+                    </div>
+                }
+            </div>
+            <a class="carousel-control-prev" href="#beschikbareReizenCarousel" role="button" data-slide="prev">
+                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                <span class="sr-only">Previous</span>
+            </a>
+            <a class="carousel-control-next" href="#beschikbareReizenCarousel" role="button" data-slide="next">
+                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                <span class="sr-only">Next</span>
+            </a>
+        </div>
+        
+        <!-- Gallery -->
+        <h1>Ook interessant</h1>
+        <div class="row">
+            @for (int i = 0; i < Model.BeschikbareGroepsreizen.Count; i++)
+            {
+                var groepsreis = Model.BeschikbareGroepsreizen[i];
+                var foto = Model.BeschikbareFotos.FirstOrDefault(f => f.Bestemming != null && f.Bestemming.Id == groepsreis.Bestemming.Id);
+                if (groepsreis != null && foto != null)
+                {
+                    <div class="col-md-4">
+                        <div class="card mb-4">
+                            <a href="@Url.Action("Detail", "Details", new { id = groepsreis.Id })">
+                                <img src="~/images/@foto.Naam" class="card-img-top fixed-size-img" alt="@foto.Naam">
+                            </a>
+                            <div class="green-card card-body">
+                                <h5 class="card-title">@groepsreis.Bestemming.BestemmingsNaam</h5>
+                                <div class="accordion" id="accordionExample">
+                                    <div class="card">
+                                        <div class="card-header" id="headingOne">
+                                            <h2 class="mb-0">
+                                                <button class="btn btn-link" type="button" data-toggle="collapse" data-target="#collapseOne@foto.Id" aria-expanded="true" aria-controls="collapseOne@foto.Id" data-href="@Url.Action("Detail", "Details", new { id = foto.Id })">
+                                                    Meer info
+                                                </button>
+                                            </h2>
+                                        </div>
+                                        <div id="collapseOne@foto.Id" class="collapse" aria-labelledby="headingOne" data-parent="#accordionExample">
+                                            <div class="card-body">
+                                                <p>@groepsreis.Bestemming.Beschrijving</p>
+                                                <p><strong>Locatie:</strong> @groepsreis.Bestemming.BestemmingsNaam</p>
+                                                <p><strong>Prijs:</strong> €@groepsreis.Prijs</p>
+                                                <p><strong>Vertrekdatum:</strong> @groepsreis.BeginDatum.ToString("dd-MM-yyyy")</p>
+                                                <p><strong>Einddatum:</strong> @groepsreis.EindDatum.ToString("dd-MM-yyyy")</p>
+                                                <p><strong>Minimumleeftijd:</strong> @groepsreis.Bestemming.MinLeeftijd</p>
+                                                <p><strong>Maximumleeftijd:</strong> @groepsreis.Bestemming.MaxLeeftijd</p>
+                                                <p><strong>Activiteiten:</strong></p>
+                                                <ul>
+                                                    @foreach (var programma in groepsreis.Programmas)
+                                                    {
+                                                        <li>@programma.Activiteit.Naam</li>
+                                                    }
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                }
+            }
+        </div>
+        <h1>Verlopen Reizen</h1>
+        <div id="verlopenReizenCarousel" class="carousel slide" data-ride="carousel">
+            <div class="carousel-inner">
+                @for (int i = 0; i < Model.VerlopenGroepsreizen.Count; i += 3)
+                {
+                    <div class="carousel-item @(i == 0 ? "active" : "")">
+                        <div class="row">
+                            @for (int j = 0; j < 3; j++)
+                            {
+                                if (i + j < Model.VerlopenGroepsreizen.Count)
+                                {
+                                    var groepsreis = Model.VerlopenGroepsreizen[i + j];
+                                    var foto = Model.BeschikbareFotos.FirstOrDefault(f => f.Bestemming != null && f.Bestemming.Id == groepsreis.Bestemming.Id);
+                                    if (foto != null)
+                                    {
+                                        <div class="col-md-4">
+                                            <div class="card mb-4">
+                                                <a href="@Url.Action("Detail", "Details", new { id = groepsreis.Id })">
+                                                    <img src="~/images/@foto.Naam" class="card-img-top fixed-size-img" alt="@foto.Naam">
+                                                </a>
+                                                <div class="green-card card-body">
+                                                    <h5 class="card-title">@foto.Bestemming.BestemmingsNaam</h5>
+                                                    <div class="accordion" id="accordionExample">
+                                                        <div class="card">
+                                                            <div class="card-header" id="headingOne">
+                                                                <h2 class="mb-0">
+                                                                    <button class="btn btn-link" type="button" data-toggle="collapse" data-target="#collapseOne@foto.Id" aria-expanded="true" aria-controls="collapseOne@foto.Id" data-href="@Url.Action("Detail", "Details", new { id = foto.Id })">
+                                                                        Meer info
+                                                                    </button>
+                                                                </h2>
+                                                            </div>
+                                                            <div id="collapseOneVerlopen@foto.Id" class="collapse" aria-labelledby="headingOne" data-parent="#accordionExample">
+                                                                <div class="card-body">
+                                                                    <p>@foto.Bestemming.Beschrijving</p>
+                                                                    <p><strong>Locatie:</strong> @foto.Bestemming.BestemmingsNaam</p>
+                                                                    <p><strong>Prijs:</strong> €@groepsreis.Prijs</p>
+                                                                    <p><strong>Vertrekdatum:</strong> @groepsreis.BeginDatum.ToString("dd-MM-yyyy")</p>
+                                                                    <p><strong>Einddatum:</strong> @groepsreis.EindDatum.ToString("dd-MM-yyyy")</p>
+                                                                    <p><strong>Minimumleeftijd:</strong> @foto.Bestemming.MinLeeftijd</p>
+                                                                    <p><strong>Maximumleeftijd:</strong> @foto.Bestemming.MaxLeeftijd</p>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    }
+                                }
+                            }
+                        </div>
+                    </div>
+                }
+            </div>
+            <a class="carousel-control-prev" href="#verlopenReizenCarousel" role="button" data-slide="prev">
+                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                <span class="sr-only">Previous</span>
+            </a>
+            <a class="carousel-control-next" href="#verlopenReizenCarousel" role="button" data-slide="next">
+                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                <span class="sr-only">Next</span>
+            </a>
+        </div>
+    </div>
+</body>
+</html>
+<!--Script voor de werking van de carousel-->
+<script>
+    $(document).ready(function () {
+        // Event listener voor het begin van een slide
+        $('#photoCarousel').on('slide.bs.carousel', function (e) {
+            var $e = $(e.relatedTarget); // Het volgende item dat wordt weergegeven
+            var idx = $e.index(); // Index van het volgende item
+            var itemsPerSlide = 3; // Aantal items per slide
+            var totalItems = $('.carousel-item').length; // Totaal aantal items in de carousel
+
+            // Controleer of we aan het einde van de carousel zijn
+            if (idx >= totalItems - (itemsPerSlide - 1)) {
+                var it = itemsPerSlide - (totalItems - idx); // Aantal items dat moet worden toegevoegd
+                for (var i = 0; i < it; i++) {
+                    // Voeg slides toe aan het einde
+                    if (e.direction == "left") {
+                        $('.carousel-item').eq(i).appendTo('.carousel-inner');
+                    } else {
+                        $('.carousel-item').eq(0).appendTo('.carousel-inner');
+                    }
+                }
+            }
+        });
+
+        // Custom functie om een eindeloze loop te garanderen
+        $('#photoCarousel').on('slid.bs.carousel', function () {
+            var $items = $('.carousel-item'); // Alle items in de carousel
+            var totalItems = $items.length; // Totaal aantal items
+            var itemsPerSlide = 3; // Aantal items per slide
+
+            // Zorg voor de juiste volgorde van items
+            $items.each(function (index) {
+                var $item = $(this); // Huidig item
+                var nextIndex = (index + itemsPerSlide) % totalItems; // Volgende index
+                $item.find('.col-md-4').each(function (colIndex) {
+                    var $col = $(this); // Huidige kolom
+                    var newIndex = (nextIndex + colIndex) % totalItems; // Nieuwe index voor de kolom
+                    var newFoto = Model.ElementAt(newIndex); // Nieuwe foto op basis van de index
+                    $col.find('img').attr('src', '~/images/' + newFoto.Bestemming.BestemmingsNaam); // Update de afbeelding
+                    $col.find('.card-title').text(newFoto.Naam); // Update de titel
+                    $col.find('.card-body .card-body').text(newFoto.Bestemming.BestemmingsNaam); // Update de bestemmingsnaam
+                });
+            });
+        });
+    });
+</script>
+
+<!--Script voor de werking van de accordion-->
+<script>
+    $(document).ready(function () {
+        $('.btn-link').hover(
+            function () {
+                $(this).closest('.card').find('.collapse').addClass('show');
+            },
+            function () {
+                $(this).closest('.card').find('.collapse').removeClass('show');
+            }
+        );
+
+        $('.btn-link').click(function (e) {
+            e.preventDefault();
+            var href = $(this).data('href');
+            window.location.href = href;
+        });
+    });
+</script>
+<style>
+    .carousel-control-prev,
+    .carousel-control-next {
+        height: 50%;
+        top: 25%;
+        bottom: 25%; 
+    }
+</style>

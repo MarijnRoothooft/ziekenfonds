@@ -1,0 +1,94 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - Project_ZF</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/Project_ZF.styles.css" asp-append-version="true" />
+    <link href="~/lib/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet" />
+    <link href="~/lib/bootstrap-icons/font/bootstrap-icons.min.css" rel="stylesheet" />
+</head>
+<body class="light-mode">
+    <header>
+        <nav class="navbar navbar-expand-sm navbar-custom">
+            <div class="container-fluid">
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
+                        aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
+                    <ul class="navbar-nav flex-grow-1">
+                        <li class="nav-item">
+                            <a class="nav-link" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
+                        </li>
+                        
+                         <li class="nav-item">
+                             <a class="nav-link" asp-area="" asp-controller="Dashboard" asp-action="Index">Dashboard</a>
+                         </li>
+                        
+                        @if (User.IsInRole("admin") || User.IsInRole("beheerder"))
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link" asp-area="" asp-controller="Account" asp-action="Index">Accountbeheer</a>
+                            </li>
+                      
+                            <li class="nav-item">
+                            <a class="nav-link" asp-area="" asp-controller="Bestemming" asp-action="Index">BestemmingenBeheer</a>
+                            </li>
+                      
+                            <li class="nav-item">
+                            <a class="nav-link" asp-area="" asp-controller="Opleiding" asp-action="Index">Opleiding</a>
+                            </li>
+
+                            <li class="nav-item">
+                                <a class="nav-link" asp-area="" asp-controller="OnkostenBeheren" asp-action="Index">OnkostenBeheren</a>
+                            </li>
+                        }
+
+                        @if (User.IsInRole("Monitor"))
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link" asp-area="" asp-controller="Monitor" asp-action="Index">Monitor</a>
+                            </li>
+                        }
+
+                    </ul>
+                    <!--<button id="modeToggle" class="btn btn-outline-light">Dark Mode</button>-->
+                </div>
+            </div>
+            <partial name="_LoginPartial" />
+        </nav>
+    </header>
+    <div class="container">
+        <main role="main" class="pb-3">
+            @RenderBody()
+        </main>
+    </div>
+
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.5/jquery.validate.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate-unobtrusive/3.2.12/jquery.validate.unobtrusive.min.js"></script>
+
+   <!--<script>
+        //Script voor de light en dark mode 
+        document.getElementById('modeToggle').addEventListener('click', function () {
+            var body = document.body;
+            if (body.classList.contains('light-mode')) {
+                body.classList.remove('light-mode');
+                body.classList.add('dark-mode');
+                this.textContent = 'Light Mode';
+            } else {
+                body.classList.remove('dark-mode');
+                body.classList.add('light-mode');
+                this.textContent = 'Dark Mode';
+            }
+        });
+     </script>-->
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>

@@ -1,0 +1,52 @@
+﻿@using Project_ZF.ViewModels;
+
+@model BeloningViewModel;
+
+<div class="container mt-5">
+    <h1 class="mb-4">Beloningen per level</h1>
+
+    @if (User.IsInRole("admin") || User.IsInRole("verantwoordelijke"))
+    {
+        <div class="mt-3 mb-5">
+            <a class="btn btn-success" asp-action="Create">Maak een nieuwe beloning</a>
+        </div>
+    }
+    
+    <table class="table table-bordered">
+        <thead class="table-dark">
+            <tr>
+                <th>Level</th>
+                <th>Benodigde Punten</th>
+                <th>Beloning</th>
+                <th>Uitleg Beloning</th>
+                 @if (User.IsInRole("admin") || User.IsInRole("verantwoordelijke"))
+                 {
+                    <th>Acties</th>
+                 }
+                
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var beloning in Model.Beloningen)
+            {
+                <tr>
+                    <td>@beloning.Level.Naam</td>
+                    <td>@beloning.Level.BenodigdePunten</td>
+                    <td>@beloning.Naam</td>
+                    <td>@beloning.Beschrijving</td>
+
+                    @if(User.IsInRole("admin") || User.IsInRole("verantwoordelijke"))
+                    {
+                        <td>
+                            <a class="btn btn-primary btn-sm mb-1" asp-action="Edit" asp-route-id="@beloning.Id">Aanpassen</a>
+                            <form asp-action="Delete" asp-route-id="@beloning.Id" method="post">
+                                <button type="submit" class="btn btn-danger btn-sm mb-1">Verwijderen</button>
+                            </form>
+                        </td>
+                    }
+                    
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

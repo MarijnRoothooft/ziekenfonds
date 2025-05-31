@@ -1,0 +1,44 @@
+﻿@model IEnumerable<Project_ZF.ViewModels.OpleidingViewModel>
+
+<title>Opleidingen</title>
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+
+<div class="container mt-5">
+    <h1 class="mb-4">Opleidingen</h1>
+
+    <div class="mt-3 mb-5">
+        <a class="btn btn-success" asp-action="Create">Creeër Nieuw</a>
+        <button type="button" class="btn btn-secondary" onclick="history.back()">Terug</button>
+    </div>
+
+    <table class="table table-bordered">
+        <thead class="thead-dark">
+            <tr>
+                <th>Naam</th>
+                <th>Beschrijving</th>
+                <th>Begin Datum</th>
+                <th>Eind Datum</th>
+                <th>Aantal Plaatsen</th>
+                <th>Acties</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>@item.Naam</td>
+                    <td>@item.Beschrijving</td>
+                    <td>@item.BeginDatum.ToString("dd-MM-yyyy")</td>
+                    <td>@item.EindDatum.ToString("dd-MM-yyyy")</td>
+                    <td>@item.AantalPlaatsen</td>
+                    <td>
+                        <a class="btn btn-primary btn-sm mb-1" asp-action="Edit" asp-route-id="@item.Id">Aanpassen</a>
+                        <a class="btn btn-info btn-sm mb-1" asp-action="Details" asp-route-id="@item.Id">Details</a>
+                        <a class="btn btn-danger btn-sm mb-1" asp-action="Delete" asp-route-id="@item.Id">Verwijderen</a>
+                        <a class="btn btn-success btn-sm mb-1" asp-action="Booking" asp-route-id="@item.Id">Boeken</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

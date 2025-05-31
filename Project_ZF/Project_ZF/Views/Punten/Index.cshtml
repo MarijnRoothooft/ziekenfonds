@@ -1,0 +1,90 @@
+﻿@model Project_ZF.ViewModels.PuntenViewModel
+
+<div class="d-flex justify-content-between align-items-stretch mt-3">
+    <h2>Welkom, @Model.Voornaam @Model.Achternaam!</h2>
+    <div class="col-4 ms-auto">
+        <div class="row mt-3">
+
+            <div class="col-6 mb-2">
+                <a asp-controller="Beloning" asp-action="Index" class="btn btn-success w-100 h-100 text-white text-decoration-none">
+                    Beloningen bekijken
+                </a>
+            </div>
+
+            <div class="col-6 mb-2">
+                <div class="alert alert-success w-100 h-100" role="alert">
+                    Punten: @Model.AantalPunten
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="col-4 ms-auto">
+    <div class="row mt-3">
+        @foreach (var level in Model.LevelBeloning)
+        {
+            <div class="col-6 mb-2">
+                <div class="alert alert-success w-100 h-100" role="alert">
+                    Level: @level.Level.Naam
+                </div>
+            </div>
+
+            <div class="col-6 mb-2">
+                @if (level.Level.Beloningen != null && level.Level.Beloningen.Any())
+                {
+                    @foreach (var beloning in level.Level.Beloningen)
+                    {
+                        if (beloning != null)
+                        {
+                            <div class="alert alert-success w-100 h-100" role="alert">
+                                Beloning: @beloning.Naam
+                            </div>
+                        }
+                    }
+                }
+                else
+                {
+                    <div class="alert alert-warning w-100 h-100" role="alert">
+                        Nog geen beloningen voor dit level
+                    </div>
+                }
+            </div>
+        }
+    </div>
+</div>
+
+
+
+@if (Model.Groepsreizen != null && Model.Groepsreizen.Any())
+{
+    <div class="mt-1"><h3>Verzamelde Punten:</h3></div>
+
+    @foreach (var reis in Model.Groepsreizen)
+    {
+        if (reis != null)
+        {
+            <div class="col-md-4">
+                <div class="card mb-4 mt-1">
+                    <img src="~/images/@reis.Groepsreis.Bestemming.Fotos.FirstOrDefault()?.Naam" class="card-img-top" alt="foto bestemming">
+                    <div class="card-body">
+                        <h5 class="card-title">@reis.Groepsreis.Bestemming.BestemmingsNaam</h5>
+                        <p class="card-text">@reis.Groepsreis.Bestemming.Beschrijving</p>
+                        <p class="card-text"><small class="text-muted">Begindatum: @reis.Groepsreis.BeginDatum.ToShortDateString()</small></p>
+                        <p class="card-text"><small class="text-muted">Einddatum: @reis.Groepsreis.EindDatum.ToShortDateString()</small></p>
+                        <p class="card-text">Aantal Punten voor deze reis: @reis.AantalPunten</p>
+                        <p class="card-text">Uitleg Punten: @reis.Omschrijving</p>
+                        <p class="card-text">Ingeschreven Kind: @reis.Deelnemer.Kind.Voornaam</p>
+                    </div>
+                </div>
+            </div>
+        }
+    }
+}
+else
+{
+    <h3>Nog geen reizen gekoppeld aan je account.</h3>
+}
+
+
+

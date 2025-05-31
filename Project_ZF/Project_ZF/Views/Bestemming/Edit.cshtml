@@ -1,0 +1,59 @@
+﻿@model Project_ZF.ViewModels.BestemmingEditViewModel
+
+@{
+    ViewData["Title"] = "Bestemming Bewerken";
+}
+
+<h1>Bestemming Bewerken</h1>
+
+<form asp-action="Edit" method="post" enctype="multipart/form-data">
+    <div class="form-group">
+        <label asp-for="Code" class="control-label"></label>
+        <input asp-for="Code" class="form-control" />
+        <span asp-validation-for="Code" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="BestemmingsNaam" class="control-label"></label>
+        <input asp-for="BestemmingsNaam" class="form-control" />
+        <span asp-validation-for="BestemmingsNaam" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="Beschrijving" class="control-label"></label>
+        <textarea asp-for="Beschrijving" class="form-control"></textarea>
+        <span asp-validation-for="Beschrijving" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="MinLeeftijd" class="control-label"></label>
+        <input asp-for="MinLeeftijd" class="form-control" />
+        <span asp-validation-for="MinLeeftijd" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="MaxLeeftijd" class="control-label"></label>
+        <input asp-for="MaxLeeftijd" class="form-control" />
+        <span asp-validation-for="MaxLeeftijd" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label>Huidige Fotos</label>
+        <div>
+            @foreach (var foto in Model.Fotos)
+            {
+                <div>
+                    <img src="~/images/@foto.Naam" alt="Foto" class="img-thumbnail" style="width:100px;height:auto;" />
+                    <input type="checkbox" name="FotosToRemove" value="@foto.Id" /> Verwijderen
+                </div>
+            }
+        </div>
+    </div>
+    <div class="form-group">
+        <label>Nieuwe Foto</label>
+        <input type="file" name="Foto" class="form-control" />
+    </div>
+    <div class="form-group">
+        <input type="submit" value="Opslaan" class="btn btn-primary" />
+        <a asp-action="Index" class="btn btn-secondary">Terug</a>
+    </div>
+</form>
+
+@section Scripts {
+    @await Html.PartialAsync("_ValidationScriptsPartial")
+}

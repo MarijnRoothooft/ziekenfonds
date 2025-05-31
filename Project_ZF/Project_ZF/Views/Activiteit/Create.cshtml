@@ -1,0 +1,31 @@
+﻿@model Project_ZF.ViewModels.ActiviteitViewModel
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Nieuwe Activiteit</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
+    <div class="container mt-5">
+        <h1 class="mb-4">Nieuwe Activiteit</h1>
+        <form asp-action="Create" method="post">
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label for="Naam">Naam:</label>
+                        <input type="text" class="form-control" id="Naam" name="Naam" required />
+                    </div>
+                    <button type="submit" class="btn btn-primary">Bevestigen</button>
+                </div>
+                <div class="col-md-8">
+                    <div class="form-group">
+                        <label for="Beschrijving">Beschrijving:</label>
+                        <textarea class="form-control" id="Beschrijving" name="Beschrijving" rows="3" required></textarea>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</body>
+</html>

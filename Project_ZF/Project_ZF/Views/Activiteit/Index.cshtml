@@ -1,0 +1,61 @@
+﻿@model IEnumerable<Project_ZF.ViewModels.ActiviteitViewModel>
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Activiteiten</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+</head>
+<body>
+    <div class="container mt-5">
+        <h1 class="mb-4">Activiteiten</h1>
+        @{
+            var groepsreisId = Context.Request.Query["groepsreisId"];
+        }
+        <form asp-controller="Programma" asp-action="AddActiviteitToGroepsreis" method="post" id="activiteitForm">
+            <input type="hidden" name="groepsreisId" value="@groepsreisId" />
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label for="activiteitDropdown">Kies een activiteit:</label>
+                        <select class="form-control" id="activiteitDropdown" name="activiteitId">
+                            <option value="" data-beschrijving="" data-id="">Selecteer een activiteit</option>
+                            @foreach (var activiteit in Model)
+                            {
+                                <option value="@activiteit.Id" data-beschrijving="@activiteit.Beschrijving" data-id="@activiteit.Id">@activiteit.Naam</option>
+                            }
+                        </select>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Activiteit toevoegen</button>
+                    <a class="btn btn-success" asp-controller="Activiteit" asp-action="Create">Nieuwe Activiteit</a>
+                </div>
+                <div class="col-md-8">
+                    <div class="form-group">
+                        <label for="beschrijving">Beschrijving:</label>
+                        <textarea class="form-control" id="beschrijving" rows="3" readonly></textarea>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+
+    <script>
+        $(document).ready(function () {
+            $('#activiteitDropdown').change(function () {
+                var beschrijving = $(this).find(':selected').data('beschrijving');
+                var id = $(this).find(':selected').data('id');
+                $('#beschrijving').val(beschrijving);
+                $('#activiteitId').val(id);
+            });
+
+            $('#activiteitForm').submit(function (event) {
+                if ($('#activiteitDropdown').val() === "") {
+                    alert("Selecteer een activiteit voordat u deze toevoegt.");
+                    event.preventDefault();
+                }
+            });
+        });
+    </script>
+</body>
+</html>
